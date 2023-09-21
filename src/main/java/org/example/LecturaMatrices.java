@@ -17,7 +17,7 @@ public class LecturaMatrices {
         try {
             f = new FileReader(ruta);
             BufferedReader b = new BufferedReader(f);
-            linea = b.readLine();
+            linea = b.readLine().trim();
             tamProblema = Integer.parseInt(linea);
             matrizFlujoProductos = new Integer[tamProblema][tamProblema];
             contenidoMatrizDistancias = new Integer[tamProblema][tamProblema];
