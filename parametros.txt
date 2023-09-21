@@ -1,4 +1,4 @@
-Archivos=ford01.dat
+Archivos=_ejemplo.txt
 Semillas=12345
 Algoritmos=PrimerMejor
 OtrosParametros=1

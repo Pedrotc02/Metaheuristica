@@ -12,9 +12,13 @@ public class Main {
 
         LecturaMatrices lm = new LecturaMatrices(config.getArchivos().get(0));
         System.out.println("Matriz del flujo de productos entre cada par de unidades: \n");
-        lm.getMatrizFlujoProductos();
+        lm.getMatrizFlujoProductosPantalla();
 
         System.out.println("Contenido de la matriz de distancias entre cada par de localizaciones: \n");
-        lm.getContenidoMatrizDistancias();
+        lm.getContenidoMatrizDistanciasPantalla();
+
+        System.out.println("Greedy");
+        AlgoritmoGreedy algGreedy = new AlgoritmoGreedy();
+        algGreedy.algoritmo(lm);
     }
 }

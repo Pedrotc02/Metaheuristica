@@ -55,7 +55,7 @@ public class LecturaMatrices {
         }
     }
 
-    public void getMatrizFlujoProductos() {
+    public void getMatrizFlujoProductosPantalla() {
         for (int i = 0; i < tamProblema; i++) {
             for (int j = 0; j < tamProblema; j++) {
                 System.out.print(matrizFlujoProductos[i][j] + " ");
@@ -64,12 +64,20 @@ public class LecturaMatrices {
         }
     }
 
-    public void getContenidoMatrizDistancias() {
+    public void getContenidoMatrizDistanciasPantalla() {
         for (int i = 0; i < tamProblema; i++) {
             for (int j = 0; j < tamProblema; j++) {
                 System.out.print(contenidoMatrizDistancias[i][j] + " ");
             }
             System.out.println();
         }
+    }
+
+    public Integer[][] getMatrizFlujoProductos() {
+        return matrizFlujoProductos;
+    }
+
+    public Integer[][] getContenidoMatrizDistancias() {
+        return contenidoMatrizDistancias;
     }
 }
