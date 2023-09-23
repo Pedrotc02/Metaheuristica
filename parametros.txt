@@ -1,4 +1,0 @@
-Archivos=ford03.dat
-Semillas=12345
-Algoritmos=PrimerMejor
-OtrosParametros=1
