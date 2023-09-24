@@ -1,5 +1,5 @@
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
 public class Greedy implements Algorithm {
 
@@ -7,56 +7,33 @@ public class Greedy implements Algorithm {
 
         Solution solution = new Solution();
 
-        solution.assignations = new ArrayList<Integer>();
-        ArrayList<Integer> flow_sum = new ArrayList<Integer>();
-        ArrayList<Integer> distance_sum = new ArrayList<Integer>();
+        solution.assignations = new int[problem.size];
+        int[] flow_sum = Arrays.stream(problem.flowMatrix).mapToInt(row -> Arrays.stream(row).sum()).toArray();
+        int[] distance_sum = Arrays.stream(problem.distanceMatrix).mapToInt(row -> Arrays.stream(row).sum()).toArray();
 
-        // flow_sum[i] = suma de la fila entera
-        for (int i = 0; i < problem.distanceMatrix.size(); ++i) {
-            int flow = 0;
-            int distance = 0;
-            for (int j = 0; j < problem.distanceMatrix.size(); ++j) {
-                flow += problem.flowMatrix.get(i).get(j);
-                distance += problem.distanceMatrix.get(i).get(j);
-            }
-            flow_sum.add(flow);
-            distance_sum.add(distance);
-            solution.assignations.add(-1);
+        for (int k = 0; k < problem.size; ++k) {
+            int max_index = IntStream.range(0, flow_sum.length)
+                    .reduce((i, j) -> flow_sum[i] > flow_sum[j] ? i : j)
+                    .orElse(-1);
+
+            int min_index = IntStream.range(0, distance_sum.length)
+                    .reduce((i, j) -> distance_sum[i] < distance_sum[j] ? i : j)
+                    .orElse(-1);
+
+            flow_sum[max_index] = Integer.MIN_VALUE;
+            distance_sum[min_index] = Integer.MAX_VALUE;
+
+            solution.assignations[max_index] = min_index;
         }
 
-        for (int i = 0; i < problem.distanceMatrix.size(); ++i) {
-            int index1 = flow_sum.indexOf(getMax(flow_sum));
-            int index2 = distance_sum.indexOf(Collections.min(distance_sum));
+        for (int i = 0; i < problem.size; ++i) {
+            for (int j = 0; j < problem.size; ++j) {
 
-            System.out.printf("Asignaciones: %s x %s\n", index2, index1);
-
-            flow_sum.set(index1, Integer.MIN_VALUE);
-            distance_sum.set(index2, Integer.MAX_VALUE);
-
-            solution.assignations.set(index1, index2);
-        }
-
-        System.out.println(solution.assignations);
-
-        for (int i = 0; i < problem.distanceMatrix.size(); ++i) {
-            for (int j = 0; j < problem.distanceMatrix.size(); ++j) {
-
-                solution.value += problem.flowMatrix.get(i).get(j)
-                        * problem.distanceMatrix.get(solution.assignations.get(i)).get(solution.assignations.get(j));
+                solution.value += problem.flowMatrix[i][j]
+                        * problem.distanceMatrix[solution.assignations[i]][solution.assignations[j]];
             }
         }
 
         return solution;
-    }
-
-    static Integer getMax(ArrayList<Integer> arr) {
-        Integer res = arr.get(0);
-        for (int i = 1; i < arr.size(); ++i) {
-            if (arr.get(i) >= res) {
-                res = arr.get(i);
-            }
-        }
-
-        return res;
     }
 }

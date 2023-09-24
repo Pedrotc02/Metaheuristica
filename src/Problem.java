@@ -1,42 +1,33 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Problem {
-    ArrayList<ArrayList<Integer>> flowMatrix;
-    ArrayList<ArrayList<Integer>> distanceMatrix;
+    final int[][] flowMatrix;
+    final int[][] distanceMatrix;
+    final int size;
 
-    public Problem(String filepath) {
+    public Problem(String filepath) throws FileNotFoundException {
 
-        this.flowMatrix = new ArrayList<ArrayList<Integer>>();
-        this.distanceMatrix = new ArrayList<ArrayList<Integer>>();
-        try {
-            Scanner input = new Scanner(new File(filepath));
-            int size = input.nextInt();
-            input.nextLine();
-            input.nextLine();
+        Scanner input = new Scanner(new File(filepath));
+        this.size = input.nextInt();
+        input.nextLine();
+        input.nextLine();
 
-            for (int i = 0; i < size; ++i) {
-                Scanner colReader = new Scanner(input.nextLine());
-                ArrayList<Integer> col = new ArrayList<Integer>();
-                while (colReader.hasNextInt()) {
-                    col.add(colReader.nextInt());
-                }
-                this.flowMatrix.add(col);
-            }
+        this.flowMatrix = ReadMatrix(input, this.size);
+        input.nextLine();
 
-            input.nextLine();
+        this.distanceMatrix = ReadMatrix(input, this.size);
+        input.close();
+    }
 
-            for (int i = 0; i < size; ++i) {
-                Scanner colReader = new Scanner(input.nextLine());
-                ArrayList<Integer> col = new ArrayList<Integer>();
-                while (colReader.hasNextInt()) {
-                    col.add(colReader.nextInt());
-                }
-                this.distanceMatrix.add(col);
-            }
-        } catch (Exception e) {
-            System.out.println("Error: " + e.toString());
+    private static int[][] ReadMatrix(Scanner input, int size) {
+
+        int[][] matrix = new int[size][size];
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j)
+                matrix[i][j] = input.nextInt();
         }
+        return matrix;
     }
 }
