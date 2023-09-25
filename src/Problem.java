@@ -21,6 +21,14 @@ public class Problem {
         input.close();
     }
 
+    public int calculateCost(int[] assignations) {
+        int cost = 0;
+        for (int i = 0; i < this.size; ++i)
+            for (int j = 0; j < this.size; ++j)
+                cost += this.flowMatrix[i][j] * this.distanceMatrix[assignations[i]][assignations[j]];
+        return cost;
+    }
+
     private static int[][] ReadMatrix(Scanner input, int size) {
 
         int[][] matrix = new int[size][size];

@@ -5,9 +5,8 @@ public class Greedy implements Algorithm {
 
     public Solution Solve(Problem problem) {
 
-        Solution solution = new Solution();
+        Solution solution = new Solution(problem.size);
 
-        solution.assignations = new int[problem.size];
         int[] flow_sum = Arrays.stream(problem.flowMatrix).mapToInt(row -> Arrays.stream(row).sum()).toArray();
         int[] distance_sum = Arrays.stream(problem.distanceMatrix).mapToInt(row -> Arrays.stream(row).sum()).toArray();
 
@@ -29,7 +28,7 @@ public class Greedy implements Algorithm {
         for (int i = 0; i < problem.size; ++i) {
             for (int j = 0; j < problem.size; ++j) {
 
-                solution.value += problem.flowMatrix[i][j]
+                solution.cost += problem.flowMatrix[i][j]
                         * problem.distanceMatrix[solution.assignations[i]][solution.assignations[j]];
             }
         }
