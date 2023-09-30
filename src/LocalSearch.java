@@ -1,3 +1,5 @@
+import java.util.BitSet;
+
 public class LocalSearch implements Algorithm {
 
     final int seed;
@@ -16,19 +18,20 @@ public class LocalSearch implements Algorithm {
         Utils.printArray(solution.assignations);
         System.out.println("\nCoste: " + solution.cost);
 
-        // TODO: Camiar array de bool por bits?
-        boolean[] dlb = new boolean[problem.size];
+        Dlb dlb = new Dlb(problem.size);
         int iterations = 0;
 
         while (true) {
+            // TODO: Hay que hacer la primera iteración de i sea aleatoria con base en la
+            // semilla
             for (int i = 0; i < dlb.length; ++i) {
-                if (dlb[i])
+                if (dlb.Get(i))
                     continue;
 
                 boolean improve_flag = false;
-                for (int j = 0; j < dlb.length; ++j) {
+                for (int j = i + 1; j < dlb.length; ++j) {
 
-                    if (iterations >= maxIterations || allBitsActivated(dlb))
+                    if (iterations >= maxIterations || dlb.AllActivated())
                         return solution;
 
                     Utils.Pair swap = new Utils.Pair(i, j);
@@ -38,7 +41,10 @@ public class LocalSearch implements Algorithm {
 
                     Utils.swapElements(solution.assignations, swap);
                     solution.cost += diffCost;
-                    dlb[i] = dlb[j] = false;
+
+                    dlb.Set(i, false);
+                    dlb.Set(j, false);
+
                     improve_flag = true;
 
                     System.out.print("Nueva Asignación: ");
@@ -48,50 +54,58 @@ public class LocalSearch implements Algorithm {
                     iterations++;
                 }
                 if (!improve_flag)
-                    dlb[i] = true;
+                    dlb.Set(i, true);
             }
         }
     }
 
     private int calculateDiffCost(Problem problem, Algorithm.Solution solution, Utils.Pair swap) {
 
-        // TODO: Ahora mismo utiliza el algoritmo clásico para calcular el coste, hay
-        // que arreglar el algoritmo de factorización
-        boolean usingFactorization = false;
-        if (!usingFactorization) {
-            Solution newSolution = new Solution(solution);
-            Utils.swapElements(newSolution.assignations, swap);
-            return problem.calculateCost(newSolution.assignations) - solution.cost;
-        } else {
-            int diff = 0;
+        int diff = 0;
 
-            // Renombro las variables tal y como aparece en la fórmula
-            int[][] f = problem.flowMatrix;
-            int[][] d = problem.distanceMatrix;
-            int r = solution.assignations[swap.first];
-            int s = solution.assignations[swap.second];
+        // Renombro las variables tal y como aparece en la fórmula
+        int[][] f = problem.flowMatrix;
+        int[][] d = problem.distanceMatrix;
+        int r = swap.first;
+        int s = swap.second;
 
-            for (int k = 0; k < problem.size; ++k) {
+        int elementR = solution.assignations[r];
+        int elementS = solution.assignations[s];
 
-                if (k == r || k == s) {
-                    continue;
-                }
+        for (int k = 0; k < solution.assignations.length; ++k) {
+            if (k == r || k == s)
+                continue;
+            int elementK = solution.assignations[k];
 
-                diff += f[r][k] * (d[s][k] - d[r][k])
-                        + f[s][k] * (d[r][k] - d[s][k])
-                        + f[k][r] * (d[k][s] - d[k][r])
-                        + f[k][s] * (d[k][r] - d[k][s]);
-            }
-
-            return diff;
+            diff += 2 * (f[k][r] - f[k][s]) * (d[elementK][elementS] - d[elementK][elementR]);
         }
+        return diff;
     }
 
-    private boolean allBitsActivated(boolean[] dlb) {
-        int count = 0;
-        for (boolean b : dlb)
-            if (!b)
-                count++;
-        return count == 1;
+    private class Dlb {
+        private BitSet bitset;
+        final int length;
+
+        public Dlb(int size) {
+            this.bitset = new BitSet(size);
+            this.length = size;
+        }
+
+        public boolean Get(int index) {
+            return bitset.get(index);
+        }
+
+        public void Set(int index, boolean value) {
+            bitset.set(index, value);
+        }
+
+        public boolean AllActivated() {
+            int count = 0;
+            for (int i = 0; i < length; ++i) {
+                if (!Get(i))
+                    count++;
+            }
+            return count <= 1;
+        }
     }
 }
