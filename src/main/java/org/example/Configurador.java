@@ -63,8 +63,8 @@ public class Configurador {
         return archivos;
     }
 
-    public ArrayList<String> getAlgoritmos() {
-        return algoritmos;
+    public String getAlgoritmos() {
+        return algoritmos.get(0);
     }
 
     public ArrayList<Long> getSemillas() {

@@ -11,14 +11,23 @@ public class Main {
         System.out.println();
 
         LecturaMatrices lm = new LecturaMatrices(config.getArchivos().get(0));
-        System.out.println("Matriz del flujo de productos entre cada par de unidades: \n");
+        System.out.println("Tamano del Problema: " + lm.getTamProblema());
+        System.out.println("Matriz del flujo de productos entre cada par de unidades: ");
         lm.getMatrizFlujoProductosPantalla();
 
-        System.out.println("Contenido de la matriz de distancias entre cada par de localizaciones: \n");
+        System.out.println("Contenido de la matriz de distancias entre cada par de localizaciones: ");
         lm.getContenidoMatrizDistanciasPantalla();
 
-        System.out.println("Greedy");
-        AlgoritmoGreedy algGreedy = new AlgoritmoGreedy();
-        algGreedy.algoritmo(lm);
+        switch (config.getAlgoritmos()){
+            case "Greedy":
+                Greedy algGreedy = new Greedy();
+                algGreedy.algoritmo(lm);
+                break;
+
+            case "Busqueda_Local":
+                PrimeroMejor algBusquedaLocal = new PrimeroMejor(lm, config.getSemillas().get(0));
+                algBusquedaLocal.dlb(lm, config.getParametrosExtra());
+                break;
+        }
     }
 }

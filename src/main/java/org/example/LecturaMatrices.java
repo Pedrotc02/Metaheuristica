@@ -4,11 +4,14 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class LecturaMatrices {
     Integer tamProblema;
     Integer[][] matrizFlujoProductos;
     Integer[][] contenidoMatrizDistancias;
+    ArrayList<Integer> potencialFlujo = new ArrayList<>();
+    ArrayList<Integer> potencialDistancias = new ArrayList<>();
 
     public LecturaMatrices(String ruta) {
 
@@ -53,6 +56,8 @@ public class LecturaMatrices {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        rellenarVectores();
     }
 
     public void getMatrizFlujoProductosPantalla() {
@@ -77,7 +82,38 @@ public class LecturaMatrices {
         return matrizFlujoProductos;
     }
 
-    public Integer[][] getContenidoMatrizDistancias() {
+    public Integer[][] getMatrizDistancias() {
         return contenidoMatrizDistancias;
+    }
+
+    public int getTamProblema() {
+        return tamProblema;
+    }
+
+    public void rellenarVectores(){
+        int fila = 0;
+        Integer sumatoriaFlujos = 0;
+        Integer sumatoriaDistancias = 0;
+
+        while (fila < getMatrizFlujoProductos().length){
+            for (int i = 0; i < getMatrizFlujoProductos().length; i++) {
+                sumatoriaFlujos += getMatrizFlujoProductos()[fila][i];
+                sumatoriaDistancias += getMatrizDistancias()[fila][i];
+            }
+
+            potencialFlujo.add(fila, sumatoriaFlujos);
+            potencialDistancias.add(fila, sumatoriaDistancias);
+            fila++;
+            sumatoriaFlujos = 0;
+            sumatoriaDistancias = 0;
+        }
+    }
+
+    public ArrayList<Integer> getPotencialFlujo() {
+        return potencialFlujo;
+    }
+
+    public ArrayList<Integer> getPotencialDistancias() {
+        return potencialDistancias;
     }
 }

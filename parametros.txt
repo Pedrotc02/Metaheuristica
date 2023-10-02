@@ -1,4 +1,4 @@
-Archivos=ford04.dat
-Semillas=12345
-Algoritmos=PrimerMejor
-OtrosParametros=1
+Archivos=ford01.dat
+Semillas=53912166
+Algoritmos=Busqueda_Local
+OtrosParametros=1000
