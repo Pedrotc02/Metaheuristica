@@ -1,4 +1,5 @@
 import java.util.BitSet;
+import java.util.Random;
 
 public class LocalSearch implements Algorithm {
 
@@ -21,29 +22,32 @@ public class LocalSearch implements Algorithm {
         Dlb dlb = new Dlb(problem.size);
         int iterations = 0;
 
-        while (true) {
-            // TODO: Hay que hacer la primera iteración de i sea aleatoria con base en la
-            // semilla
+        Random rand = new Random(this.seed);
+
+        int randomInitialIndex = rand.nextInt(dlb.length);
+        while (iterations < maxIterations && !dlb.AllActivated()) {
+
             for (int i = 0; i < dlb.length; ++i) {
-                if (dlb.Get(i))
+                int first = (randomInitialIndex + i) % dlb.length;
+                if (dlb.Get(first))
                     continue;
 
                 boolean improve_flag = false;
-                for (int j = i + 1; j < dlb.length; ++j) {
+                for (int j = 1; j < dlb.length; ++j) {
 
-                    if (iterations >= maxIterations || dlb.AllActivated())
-                        return solution;
+                    int second = (first + j) % dlb.length;
 
-                    Utils.Pair swap = new Utils.Pair(i, j);
+                    Utils.Pair swap = new Utils.Pair(first, second);
                     int diffCost = calculateDiffCost(problem, solution, swap);
+
                     if (diffCost >= 0)
                         continue;
 
                     Utils.swapElements(solution.assignations, swap);
                     solution.cost += diffCost;
 
-                    dlb.Set(i, false);
-                    dlb.Set(j, false);
+                    dlb.Set(first, false);
+                    dlb.Set(second, false);
 
                     improve_flag = true;
 
@@ -54,9 +58,10 @@ public class LocalSearch implements Algorithm {
                     iterations++;
                 }
                 if (!improve_flag)
-                    dlb.Set(i, true);
+                    dlb.Set(first, true);
             }
         }
+        return solution;
     }
 
     private int calculateDiffCost(Problem problem, Algorithm.Solution solution, Utils.Pair swap) {
@@ -73,11 +78,10 @@ public class LocalSearch implements Algorithm {
         int elementS = solution.assignations[s];
 
         for (int k = 0; k < solution.assignations.length; ++k) {
-            if (k == r || k == s)
-                continue;
-            int elementK = solution.assignations[k];
-
-            diff += 2 * (f[k][r] - f[k][s]) * (d[elementK][elementS] - d[elementK][elementR]);
+            if (k != r && k != s) {
+                int elementK = solution.assignations[k];
+                diff += 2 * (f[k][r] - f[k][s]) * (d[elementK][elementS] - d[elementK][elementR]);
+            }
         }
         return diff;
     }
@@ -105,7 +109,7 @@ public class LocalSearch implements Algorithm {
                 if (!Get(i))
                     count++;
             }
-            return count <= 1;
+            return count <= 0;
         }
     }
 }
