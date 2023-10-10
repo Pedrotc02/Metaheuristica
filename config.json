@@ -1,0 +1,8 @@
+{
+    "filepath": "./data/ford01.dat",
+    "algorithm": "LocalSearch",
+    "properties": {
+        "seed": 12345678,
+        "maxIterations": 1000
+    }
+}
