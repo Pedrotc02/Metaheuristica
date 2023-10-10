@@ -1,8 +1,10 @@
 {
-    "filepath": "./data/ford01.dat",
-    "algorithm": "LocalSearch",
-    "properties": {
-        "seed": 12345678,
-        "maxIterations": 1000
+    "archivo": "./data/ford01.dat",
+    "algoritmo": "LocalSearch",
+    "propiedades": {
+        "semilla": 12345678,
+        "maxIteraciones": 1000,
+        "limite": 5,
+        "tenenciaTabu": 7
     }
 }

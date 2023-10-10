@@ -27,6 +27,18 @@ public class Utils {
         System.out.println(RED + "[ERROR]: " + RESET + message);
     }
 
+    static void printSolution(String name, Algorithm.Solution solution) {
+        System.out.print(name + ": ");
+        Utils.printArray(solution.assignations);
+        System.out.println("\nCoste: " + solution.cost);
+    }
+
+    static void printSwappedSolution(String name, Algorithm.Solution solution, Pair swap) {
+        System.out.print(name + ": ");
+        Utils.printSwappedArray(solution.assignations, swap);
+        System.out.println("\nCoste: " + solution.cost);
+    }
+
     static void swapElements(int[] arr, Pair p) {
         int temp = arr[p.first];
         arr[p.first] = arr[p.second];

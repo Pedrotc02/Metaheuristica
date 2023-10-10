@@ -1,4 +1,3 @@
-import java.util.BitSet;
 import java.util.Random;
 
 public class LocalSearch implements Algorithm {
@@ -11,13 +10,12 @@ public class LocalSearch implements Algorithm {
         this.maxIterations = maxIterations;
     }
 
+    @Override
     public Algorithm.Solution Solve(Problem problem) {
         Solution solution = new Solution(problem.size, this.seed);
         solution.cost = problem.calculateCost(solution.assignations);
 
-        System.out.print("Asignación inicial: ");
-        Utils.printArray(solution.assignations);
-        System.out.println("\nCoste: " + solution.cost);
+        Utils.printSolution("Asignación inicial", solution);
 
         Dlb dlb = new Dlb(problem.size);
         int iterations = 0;
@@ -50,11 +48,7 @@ public class LocalSearch implements Algorithm {
                     dlb.Set(second, false);
 
                     improve_flag = true;
-
-                    System.out.print("Nueva Asignación: ");
-                    Utils.printSwappedArray(solution.assignations, swap);
-                    System.out.println("\nCoste: " + solution.cost);
-
+                    Utils.printSwappedSolution("Asignación " + (iterations + 1), solution, swap);
                     iterations++;
                 }
                 if (!improve_flag)
@@ -64,7 +58,7 @@ public class LocalSearch implements Algorithm {
         return solution;
     }
 
-    private int calculateDiffCost(Problem problem, Algorithm.Solution solution, Utils.Pair swap) {
+    public static int calculateDiffCost(Problem problem, Algorithm.Solution solution, Utils.Pair swap) {
 
         int diff = 0;
 
@@ -84,32 +78,5 @@ public class LocalSearch implements Algorithm {
             }
         }
         return diff;
-    }
-
-    private class Dlb {
-        private BitSet bitset;
-        final int length;
-
-        public Dlb(int size) {
-            this.bitset = new BitSet(size);
-            this.length = size;
-        }
-
-        public boolean Get(int index) {
-            return bitset.get(index);
-        }
-
-        public void Set(int index, boolean value) {
-            bitset.set(index, value);
-        }
-
-        public boolean AllActivated() {
-            int count = 0;
-            for (int i = 0; i < length; ++i) {
-                if (!Get(i))
-                    count++;
-            }
-            return count <= 0;
-        }
     }
 }

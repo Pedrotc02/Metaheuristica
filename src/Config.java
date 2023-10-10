@@ -7,10 +7,10 @@ import java.util.regex.Pattern;
 public class Config {
 
     static final String configFilePath = "./config.json";
-    static final Pattern filepathPattern = Pattern.compile("\"filepath\":\\s*\"([^\"]*)\"");
-    static final Pattern algorithmPattern = Pattern.compile("\"algorithm\":\\s*\"([^\"]*)\"");
+    static final Pattern filepathPattern = Pattern.compile("\"archivo\":\\s*\"([^\"]*)\"");
+    static final Pattern algorithmPattern = Pattern.compile("\"algoritmo\":\\s*\"([^\"]*)\"");
     static final Pattern propertiesPattern = Pattern
-            .compile("\"properties\":\\s*\\{\\s*((\"[^\"]*\":\\s*[^,}\\s]+,?\\s*)+)\\}");
+            .compile("\"propiedades\":\\s*\\{\\s*((\"[^\"]*\":\\s*[^,}\\s]+,?\\s*)+)\\}");
 
     Problem problem;
     Algorithm algorithm;
@@ -41,16 +41,25 @@ public class Config {
                 return new Greedy();
             case "LocalSearch": {
                 try {
-                    int seed = properties.get("seed");
-                    int maxIterations = properties.get("maxIterations");
+                    int seed = properties.get("semilla");
+                    int maxIterations = properties.get("maxIteraciones");
                     return new LocalSearch(seed, maxIterations);
                 } catch (Exception e) {
                     throw new Exception(
-                            "Los parámetros del algoritmo LocalSearch deben ser \"seed\" y \"maxIterations\".");
+                            "Los parámetros del algoritmo LocalSearch deben ser \"semilla\" y \"maxIteraciones\".");
                 }
             }
-            // case "Taboo": {
-            // }
+            case "Taboo": {
+                try {
+                    int seed = properties.get("semilla");
+                    int maxIterations = properties.get("maxIteraciones");
+                    int percentage = properties.get("limite");
+                    return new Taboo(seed, maxIterations, percentage);
+                } catch (Exception e) {
+                    throw new Exception(
+                            "Los parámetros del algoritmo Taboo deben ser \"semilla\", \"maxIteraciones\" y \"limite\".");
+                }
+            }
             default:
                 throw new Exception("El tipo de algoritmo " + algorithmType + " no está reconocido.");
         }

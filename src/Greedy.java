@@ -3,6 +3,7 @@ import java.util.stream.IntStream;
 
 public class Greedy implements Algorithm {
 
+    @Override
     public Solution Solve(Problem problem) {
 
         Solution solution = new Solution(problem.size);
@@ -25,13 +26,7 @@ public class Greedy implements Algorithm {
             solution.assignations[max_index] = min_index;
         }
 
-        for (int i = 0; i < problem.size; ++i) {
-            for (int j = 0; j < problem.size; ++j) {
-
-                solution.cost += problem.flowMatrix[i][j]
-                        * problem.distanceMatrix[solution.assignations[i]][solution.assignations[j]];
-            }
-        }
+        solution.cost = problem.calculateCost(solution.assignations);
 
         return solution;
     }
