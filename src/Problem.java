@@ -1,13 +1,12 @@
 import java.util.Scanner;
 import java.io.File;
-import java.io.FileNotFoundException;
 
 public class Problem {
     final int[][] flowMatrix;
     final int[][] distanceMatrix;
     final int size;
 
-    public Problem(String filepath) throws FileNotFoundException {
+    public Problem(String filepath) throws Exception {
 
         Scanner input = new Scanner(new File(filepath));
         this.size = input.nextInt();

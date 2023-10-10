@@ -34,20 +34,25 @@ public class Config {
         this.algorithm = chooseAlgorithm(algorithmType, properties);
     }
 
-    private Algorithm chooseAlgorithm(String algorithmType, Hashtable<String, String> properties) throws Exception {
+    private Algorithm chooseAlgorithm(String algorithmType, Hashtable<String, Integer> properties) throws Exception {
 
         switch (algorithmType) {
             case "Greedy":
                 return new Greedy();
             case "LocalSearch": {
-                int seed = Integer.parseInt(properties.get("seed"));
-                int maxIterations = Integer.parseInt(properties.get("maxIterations"));
-                return new LocalSearch(seed, maxIterations);
+                try {
+                    int seed = properties.get("seed");
+                    int maxIterations = properties.get("maxIterations");
+                    return new LocalSearch(seed, maxIterations);
+                } catch (Exception e) {
+                    throw new Exception(
+                            "Los parámetros del algoritmo LocalSearch deben ser \"seed\" y \"maxIterations\".");
+                }
             }
             // case "Taboo": {
             // }
             default:
-                throw new Exception();
+                throw new Exception("El tipo de algoritmo " + algorithmType + " no está reconocido.");
         }
     }
 
@@ -64,22 +69,24 @@ public class Config {
         }
     }
 
-    private Hashtable<String, String> readAlgorithmProperties(String input) throws Exception {
+    private Hashtable<String, Integer> readAlgorithmProperties(String input) throws Exception {
 
-        var table = new Hashtable<String, String>();
+        var table = new Hashtable<String, Integer>();
         Matcher matcher = propertiesPattern.matcher(input);
 
         if (matcher.find()) {
             String propertiesContent = matcher.group(1);
-
             String[] keyValuePairs = propertiesContent.split(",\\s*");
 
             for (String pair : keyValuePairs) {
                 var entry = pair.split(":");
                 var key = entry[0].trim().substring(1, entry[0].length() - 1);
-                var value = entry[1].trim();
-
-                table.put(key, value);
+                try {
+                    var value = Integer.parseInt(entry[1].trim());
+                    table.put(key, value);
+                } catch (Exception e) {
+                    throw new Exception("El valor de " + key + " debe ser un número entero.");
+                }
             }
         }
 

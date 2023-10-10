@@ -2,6 +2,7 @@ public class Utils {
 
     private static final String RESET = "\u001B[0m";
     private static final String GREEN = "\u001B[32m";
+    private static final String RED = "\u001B[31m";
 
     static void printArray(int[] arr) {
         for (int i = 0; i < arr.length; ++i)
@@ -20,6 +21,10 @@ public class Utils {
             else
                 System.out.print(arr[i] + " ");
         }
+    }
+
+    static void printError(String message) {
+        System.out.println(RED + "[ERROR]: " + RESET + message);
     }
 
     static void swapElements(int[] arr, Pair p) {
