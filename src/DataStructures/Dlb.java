@@ -1,9 +1,11 @@
+package DataStructures;
+
 import java.util.BitSet;
 import java.util.Random;
 
 public class Dlb {
     private BitSet bitset;
-    final int length;
+    public final int length;
 
     public Dlb(int size) {
         this.bitset = new BitSet(size);

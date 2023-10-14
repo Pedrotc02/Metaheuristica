@@ -4,6 +4,9 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Algorithms.*;
+import Algorithms.Algorithm.Solution;
+
 public class Config {
 
     static final String configFilePath = "./config.json";
@@ -15,8 +18,6 @@ public class Config {
     Problem problem;
     Algorithm algorithm;
 
-    // TODO: Faltan exceptions para cuando falta algún parámetro o tiene un valor
-    // que no corresponde.
     public Config() throws Exception {
         Scanner sc = new Scanner(new File(configFilePath));
         StringBuilder sb = new StringBuilder();
@@ -54,7 +55,8 @@ public class Config {
                     int seed = properties.get("semilla");
                     int maxIterations = properties.get("maxIteraciones");
                     int percentage = properties.get("limite");
-                    return new Taboo(seed, maxIterations, percentage);
+                    int shortTermSize = properties.get("tenenciaTabu");
+                    return new Taboo(seed, maxIterations, percentage, shortTermSize);
                 } catch (Exception e) {
                     throw new Exception(
                             "Los parámetros del algoritmo Taboo deben ser \"semilla\", \"maxIteraciones\" y \"limite\".");
@@ -65,7 +67,7 @@ public class Config {
         }
     }
 
-    public Algorithm.Solution Solve() {
+    public Solution Solve() {
         return this.algorithm.Solve(this.problem);
     }
 

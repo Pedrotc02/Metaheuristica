@@ -1,4 +1,9 @@
+package Algorithms;
+
 import java.util.Random;
+import DataStructures.Dlb;
+import DataStructures.Pair;
+import Utils.Print;
 
 public class LocalSearch implements Algorithm {
 
@@ -11,11 +16,11 @@ public class LocalSearch implements Algorithm {
     }
 
     @Override
-    public Algorithm.Solution Solve(Problem problem) {
+    public Solution Solve(Problem problem) {
         Solution solution = new Solution(problem.size, this.seed);
         solution.cost = problem.calculateCost(solution.assignations);
 
-        Utils.printSolution("Asignación inicial", solution);
+        Print.printSolution("Asignación inicial", solution);
 
         Dlb dlb = new Dlb(problem.size);
         int iterations = 0;
@@ -35,20 +40,20 @@ public class LocalSearch implements Algorithm {
 
                     int second = (first + j) % dlb.length;
 
-                    Utils.Pair swap = new Utils.Pair(first, second);
+                    Pair swap = new Pair(first, second);
                     int diffCost = calculateDiffCost(problem, solution, swap);
 
                     if (diffCost >= 0)
                         continue;
 
-                    Utils.swapElements(solution.assignations, swap);
+                    Print.swapElements(solution.assignations, swap);
                     solution.cost += diffCost;
 
                     dlb.Set(first, false);
                     dlb.Set(second, false);
 
                     improve_flag = true;
-                    Utils.printSwappedSolution("Asignación " + (iterations + 1), solution, swap);
+                    Print.printSwappedSolution("Asignación " + (iterations + 1), solution, swap);
                     iterations++;
                 }
                 if (!improve_flag)
@@ -58,7 +63,7 @@ public class LocalSearch implements Algorithm {
         return solution;
     }
 
-    public static int calculateDiffCost(Problem problem, Algorithm.Solution solution, Utils.Pair swap) {
+    public static int calculateDiffCost(Problem problem, Solution solution, Pair swap) {
 
         int diff = 0;
 

@@ -1,9 +1,17 @@
+package Algorithms;
+
 import java.util.Random;
+
+import DataStructures.CircularArray;
+import DataStructures.Dlb;
+import DataStructures.Pair;
+import Utils.Print;
 
 public class Taboo implements Algorithm {
 
     final int seed;
     final int maxIterations;
+    final CircularArray<Solution> shortTerm;
 
     /**
      * Número máximo de iteraciones que impliquen empeoramiento respecto al mejor
@@ -11,18 +19,19 @@ public class Taboo implements Algorithm {
      */
     final int threshold;
 
-    public Taboo(int seed, int maxIterations, int percentage) {
+    public Taboo(int seed, int maxIterations, int percentage, int shortTermSize) {
         this.seed = seed;
         this.maxIterations = maxIterations;
         this.threshold = maxIterations * percentage / 100;
+        this.shortTerm = new CircularArray<>(shortTermSize);
     }
 
     @Override
-    public Algorithm.Solution Solve(Problem problem) {
+    public Solution Solve(Problem problem) {
         Solution solution = new Solution(problem.size, this.seed);
         solution.cost = problem.calculateCost(solution.assignations);
 
-        Utils.printSolution("Asignación inicial", solution);
+        Print.printSolution("Asignación inicial", solution);
 
         Dlb dlb = new Dlb(problem.size);
         int iterations = 0;
@@ -44,20 +53,20 @@ public class Taboo implements Algorithm {
 
                     int second = (first + j) % dlb.length;
 
-                    Utils.Pair swap = new Utils.Pair(first, second);
+                    Pair swap = new Pair(first, second);
                     int diffCost = LocalSearch.calculateDiffCost(problem, solution, swap);
 
                     if (diffCost >= 0)
                         continue;
 
-                    Utils.swapElements(solution.assignations, swap);
+                    Print.swapElements(solution.assignations, swap);
                     solution.cost += diffCost;
 
                     dlb.Set(first, false);
                     dlb.Set(second, false);
 
                     improve_flag = true;
-                    Utils.printSwappedSolution("Asignación " + (iterations + 1), solution, swap);
+                    Print.printSwappedSolution("Asignación " + (iterations + 1), solution, swap);
                     iterations++;
                 }
                 if (!improve_flag)
@@ -66,5 +75,4 @@ public class Taboo implements Algorithm {
         }
         return solution;
     }
-
 }

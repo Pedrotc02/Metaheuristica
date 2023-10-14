@@ -1,10 +1,15 @@
+package Algorithms;
+
 import java.util.Random;
 import java.util.stream.IntStream;
 
+import DataStructures.Pair;
+import Utils.Print;
+
 public interface Algorithm {
     public class Solution {
-        int[] assignations;
-        int cost;
+        public int[] assignations;
+        public int cost;
 
         public Solution(int size) {
             this.assignations = new int[size];
@@ -27,7 +32,7 @@ public interface Algorithm {
             this.assignations = IntStream.range(0, size).toArray();
             Random random = new Random(seed);
             for (int i = size - 1; i >= 0; --i)
-                Utils.swapElements(this.assignations, new Utils.Pair(i, random.nextInt(i + 1)));
+                Print.swapElements(this.assignations, new Pair(i, random.nextInt(i + 1)));
 
             this.cost = 0;
         }
