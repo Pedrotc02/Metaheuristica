@@ -1,0 +1,10 @@
+{
+    "archivo": "./data/ford01.dat",
+    "algoritmo": "Taboo",
+    "propiedades": {
+        "semilla": 12345678,
+        "maxIteraciones": 1000,
+        "limite": 5,
+        "tenenciaTabu": 7
+    }
+}
