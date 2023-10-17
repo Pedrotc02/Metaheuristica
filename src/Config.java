@@ -55,8 +55,8 @@ public class Config {
                     int seed = properties.get("semilla");
                     int maxIterations = properties.get("maxIteraciones");
                     int percentage = properties.get("limite");
-                    int shortTermSize = properties.get("tenenciaTabu");
-                    return new Taboo(seed, maxIterations, percentage, shortTermSize);
+                    int memorySize = properties.get("tenenciaTabu");
+                    return new Taboo(seed, maxIterations, percentage, memorySize);
                 } catch (Exception e) {
                     throw new Exception(
                             "Los parámetros del algoritmo Taboo deben ser \"semilla\", \"maxIteraciones\" y \"limite\".");

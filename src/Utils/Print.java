@@ -38,10 +38,4 @@ public abstract class Print {
         Print.printSwappedArray(solution.assignations, swap);
         System.out.println("\nCoste: " + solution.cost);
     }
-
-    public static void swapElements(int[] arr, Pair p) {
-        int temp = arr[p.first];
-        arr[p.first] = arr[p.second];
-        arr[p.second] = temp;
-    }
 }

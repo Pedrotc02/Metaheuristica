@@ -6,12 +6,14 @@ import DataStructures.CircularArray;
 import DataStructures.Dlb;
 import DataStructures.Pair;
 import Utils.Print;
+import Utils.Swap;
 
 public class Taboo implements Algorithm {
 
     final int seed;
     final int maxIterations;
     final CircularArray<Solution> shortTerm;
+    final int[][] longTerm;
 
     /**
      * Número máximo de iteraciones que impliquen empeoramiento respecto al mejor
@@ -19,11 +21,12 @@ public class Taboo implements Algorithm {
      */
     final int threshold;
 
-    public Taboo(int seed, int maxIterations, int percentage, int shortTermSize) {
+    public Taboo(int seed, int maxIterations, int percentage, int memorySize) {
         this.seed = seed;
         this.maxIterations = maxIterations;
         this.threshold = maxIterations * percentage / 100;
-        this.shortTerm = new CircularArray<>(shortTermSize);
+        this.shortTerm = new CircularArray<>(memorySize);
+        this.longTerm = new int[memorySize][memorySize];
     }
 
     @Override
@@ -40,8 +43,13 @@ public class Taboo implements Algorithm {
         int randomInitialIndex = rand.nextInt(dlb.length);
 
         while (iterations < maxIterations) {
-            if (dlb.AllActivated())
+            if (dlb.AllActivated()) {
                 dlb = new Dlb(problem.size, this.seed);
+                Pair p = getBestMovement(solution, problem);
+                solution.applySwap(problem, p);
+                iterations++;
+                Print.printSwappedSolution("Asignación peor", solution, p);
+            }
 
             for (int i = 0; i < dlb.length; ++i) {
                 int first = (randomInitialIndex + i) % dlb.length;
@@ -59,7 +67,7 @@ public class Taboo implements Algorithm {
                     if (diffCost >= 0)
                         continue;
 
-                    Print.swapElements(solution.assignations, swap);
+                    Swap.swapElements(solution.assignations, swap);
                     solution.cost += diffCost;
 
                     dlb.Set(first, false);
@@ -74,5 +82,26 @@ public class Taboo implements Algorithm {
             }
         }
         return solution;
+    }
+
+    private Pair getBestMovement(Solution solution, Problem problem) {
+
+        Pair bestMovement = new Pair(0, 1);
+        int bestDiffCost = LocalSearch.calculateDiffCost(problem, solution, bestMovement);
+
+        for (int i = 0; i < solution.assignations.length; ++i) {
+            for (int j = i + 1; j < solution.assignations.length; ++j) {
+
+                Pair neighbour = new Pair(i, j);
+                int neighbourCost = LocalSearch.calculateDiffCost(problem, solution, neighbour);
+
+                if (neighbourCost < bestDiffCost) {
+                    bestDiffCost = neighbourCost;
+                    bestMovement = neighbour;
+                }
+            }
+        }
+
+        return bestMovement;
     }
 }
