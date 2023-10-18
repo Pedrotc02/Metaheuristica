@@ -41,17 +41,17 @@ public class Config {
         switch (algorithmType) {
             case "Greedy":
                 return new Greedy();
-            case "LocalSearch": {
+            case "PMDLBrandom": {
                 try {
                     int seed = properties.get("semilla");
                     int maxIterations = properties.get("maxIteraciones");
                     return new LocalSearch(seed, maxIterations, problem);
                 } catch (Exception e) {
                     throw new Exception(
-                            "Los parámetros del algoritmo LocalSearch deben ser \"semilla\" y \"maxIteraciones\".");
+                            "Los parámetros del algoritmo PMDLBrandom deben ser \"semilla\" y \"maxIteraciones\".");
                 }
             }
-            case "Tabu": {
+            case "TabuMar": {
                 try {
                     int seed = properties.get("semilla");
                     int maxIterations = properties.get("maxIteraciones");
@@ -60,7 +60,7 @@ public class Config {
                     return new Tabu(seed, maxIterations, percentage, tabuDuration, problem);
                 } catch (Exception e) {
                     throw new Exception(
-                            "Los parámetros del algoritmo Tabu deben ser \"semilla\", \"maxIteraciones\", \"porcentajeReinicializacion\" y \"tenenciaTabu\".");
+                            "Los parámetros del algoritmo TabuMar deben ser \"semilla\", \"maxIteraciones\", \"porcentajeReinicializacion\" y \"tenenciaTabu\".");
                 }
             }
             default:
