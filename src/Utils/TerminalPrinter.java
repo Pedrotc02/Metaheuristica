@@ -2,7 +2,6 @@ package Utils;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 import Algorithms.Algorithm.Solution;
 import DataStructures.Pair;
@@ -46,6 +45,9 @@ public final class TerminalPrinter {
         print("\nCoste: " + solution.cost + "\n");
     }
 
+    /**
+     * Es necesario llamar a esta función al final de la ejecución del programa
+     */
     public static void flush() {
         var singleton = getInstance();
         try {

@@ -36,8 +36,8 @@ public class Tabu implements Algorithm {
         Solution solution = new Solution(problem.size, this.seed);
         solution.cost = problem.calculateCost(solution.assignations);
 
-        Solution globalBestSolution = solution;
-        Solution localBestSolution = solution;
+        Solution localBestSolution = new Solution(solution);
+        Solution globalBestSolution = localBestSolution;
 
         TerminalPrinter.printSolution("Solucion inicial", solution);
 
@@ -82,7 +82,7 @@ public class Tabu implements Algorithm {
                     solution.applySwap(problem, swap);
 
                     if (solution.cost < localBestSolution.cost) {
-                        localBestSolution = solution;
+                        localBestSolution = new Solution(solution);
                         worseIterations = 0;
                         if (localBestSolution.cost < globalBestSolution.cost)
                             globalBestSolution = localBestSolution;

@@ -16,21 +16,10 @@ public interface Algorithm {
             this.cost = 0;
         }
 
-        /**
-         * Creates new solution from an existing one, applying the factorization
-         * algorithm to calculate the cost
-         * 
-         * @param solution
-         * @param problem
-         * @param swap
-         */
-        // public Solution(Solution solution, Problem problem, Pair swap) {
-
-        // this.assignations = solution.assignations.clone();
-        // Swap.swapElements(assignations, swap);
-        // this.cost = solution.cost + LocalSearch.calculateDiffCost(problem, solution,
-        // swap);
-        // }
+        public Solution(Solution other) {
+            this.assignations = other.assignations.clone();
+            this.cost = other.cost;
+        }
 
         /**
          * Creates new solution with Fisher-Yates shuffle
