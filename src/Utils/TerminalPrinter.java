@@ -14,10 +14,10 @@ public final class TerminalPrinter {
     private static final String RESET = "\u001B[0m";
     private static final String GREEN = "\u001B[32m";
     private static final String RED = "\u001B[31m";
+    private static final String PURPLE = "\u001B[35m";
 
-    public static void printArray(int[] arr) {
-        for (int i = 0; i < arr.length; ++i)
-            print(arr[i] + " ");
+    public static void printlnDebug(String message) {
+        print(PURPLE + "[DEBUG]: " + RESET + message + "\n");
     }
 
     public static void printSwappedArray(int[] arr, Pair p) {
@@ -55,6 +55,11 @@ public final class TerminalPrinter {
         } catch (IOException e) {
             printError(e.getMessage());
         }
+    }
+
+    private static void printArray(int[] arr) {
+        for (int i = 0; i < arr.length; ++i)
+            print(arr[i] + " ");
     }
 
     private static synchronized TerminalPrinter getInstance() {

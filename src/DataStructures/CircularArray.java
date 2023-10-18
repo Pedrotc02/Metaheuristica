@@ -27,6 +27,8 @@ public class CircularArray<T> {
     }
 
     public boolean contains(T element) {
-        return Arrays.stream(array).filter(el -> el != null).anyMatch(el -> el.equals(element));
+        return Arrays.stream(array)
+                .filter(el -> el != null)
+                .anyMatch(el -> el.equals(element));
     }
 }

@@ -23,14 +23,10 @@ public interface Algorithm {
 
         /**
          * Creates new solution with Fisher-Yates shuffle
-         * 
-         * @param size Size of problem
-         * @param seed Seed for random generator
          */
-        public Solution(int size, int seed) {
+        public Solution(int size, Random random) {
 
             this.assignations = IntStream.range(0, size).toArray();
-            Random random = new Random(seed);
             for (int i = size - 1; i >= 0; --i)
                 Swap.swapElements(this.assignations, new Pair(i, random.nextInt(i + 1)));
 

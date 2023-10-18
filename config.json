@@ -4,7 +4,7 @@
     "propiedades": {
         "semilla": 12345678,
         "maxIteraciones": 1000,
-        "limite": 5,
+        "porcentajeReinicializacion": 5,
         "tenenciaTabu": 7
     }
 }

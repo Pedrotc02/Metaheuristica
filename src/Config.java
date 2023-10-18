@@ -32,10 +32,11 @@ public class Config {
         var properties = readAlgorithmProperties(config);
         String algorithmType = readField(algorithmPattern, config);
 
-        this.algorithm = chooseAlgorithm(algorithmType, properties);
+        this.algorithm = chooseAlgorithm(algorithmType, properties, problem);
     }
 
-    private Algorithm chooseAlgorithm(String algorithmType, Hashtable<String, Integer> properties) throws Exception {
+    private Algorithm chooseAlgorithm(String algorithmType, Hashtable<String, Integer> properties, Problem problem)
+            throws Exception {
 
         switch (algorithmType) {
             case "Greedy":
@@ -44,7 +45,7 @@ public class Config {
                 try {
                     int seed = properties.get("semilla");
                     int maxIterations = properties.get("maxIteraciones");
-                    return new LocalSearch(seed, maxIterations);
+                    return new LocalSearch(seed, maxIterations, problem);
                 } catch (Exception e) {
                     throw new Exception(
                             "Los parámetros del algoritmo LocalSearch deben ser \"semilla\" y \"maxIteraciones\".");
@@ -54,12 +55,12 @@ public class Config {
                 try {
                     int seed = properties.get("semilla");
                     int maxIterations = properties.get("maxIteraciones");
-                    int percentage = properties.get("limite");
+                    int percentage = properties.get("porcentajeReinicializacion");
                     int tabuDuration = properties.get("tenenciaTabu");
-                    return new Tabu(seed, maxIterations, percentage, tabuDuration);
+                    return new Tabu(seed, maxIterations, percentage, tabuDuration, problem);
                 } catch (Exception e) {
                     throw new Exception(
-                            "Los parámetros del algoritmo tabu deben ser \"semilla\", \"maxIteraciones\" y \"limite\".");
+                            "Los parámetros del algoritmo Tabu deben ser \"semilla\", \"maxIteraciones\", \"porcentajeReinicializacion\" y \"tenenciaTabu\".");
                 }
             }
             default:

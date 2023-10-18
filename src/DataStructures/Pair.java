@@ -4,12 +4,18 @@ public class Pair {
     public final int first;
     public final int second;
 
+    // Se crea ordenado necesariamente
     public Pair(int first, int second) {
-        this.first = first;
-        this.second = second;
+        if (first < second) {
+            this.first = first;
+            this.second = second;
+        } else {
+            this.first = second;
+            this.second = first;
+        }
     }
 
-    // Auto-generated method
+    // IDE Auto-generated method
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
