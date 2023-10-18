@@ -50,16 +50,16 @@ public class Config {
                             "Los parámetros del algoritmo LocalSearch deben ser \"semilla\" y \"maxIteraciones\".");
                 }
             }
-            case "Taboo": {
+            case "Tabu": {
                 try {
                     int seed = properties.get("semilla");
                     int maxIterations = properties.get("maxIteraciones");
                     int percentage = properties.get("limite");
-                    int memorySize = properties.get("tenenciaTabu");
-                    return new Taboo(seed, maxIterations, percentage, memorySize);
+                    int tabuDuration = properties.get("tenenciaTabu");
+                    return new Tabu(seed, maxIterations, percentage, tabuDuration);
                 } catch (Exception e) {
                     throw new Exception(
-                            "Los parámetros del algoritmo Taboo deben ser \"semilla\", \"maxIteraciones\" y \"limite\".");
+                            "Los parámetros del algoritmo tabu deben ser \"semilla\", \"maxIteraciones\" y \"limite\".");
                 }
             }
             default:

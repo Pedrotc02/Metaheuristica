@@ -1,5 +1,7 @@
 package DataStructures;
 
+import java.util.Arrays;
+
 public class CircularArray<T> {
     private int insertionIndex;
     private final T[] array;
@@ -24,4 +26,7 @@ public class CircularArray<T> {
         return array[index];
     }
 
+    public boolean contains(T element) {
+        return Arrays.stream(array).filter(el -> el != null).anyMatch(el -> el.equals(element));
+    }
 }
