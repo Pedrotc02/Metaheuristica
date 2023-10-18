@@ -1,5 +1,5 @@
 import Algorithms.Algorithm.Solution;
-import Utils.Print;
+import Utils.TerminalPrinter;
 
 public class App {
 
@@ -7,9 +7,11 @@ public class App {
         try {
             Config config = new Config();
             Solution solution = config.Solve();
-            Print.printSolution("Asignación final", solution);
+            TerminalPrinter.printSolution("Solucion final", solution);
         } catch (Exception e) {
-            Print.printError(e.getMessage());
+            TerminalPrinter.printError(e.getMessage());
+        } finally {
+            TerminalPrinter.flush();
         }
     }
 }

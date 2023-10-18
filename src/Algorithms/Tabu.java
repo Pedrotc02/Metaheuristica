@@ -5,7 +5,7 @@ import java.util.Random;
 import DataStructures.CircularArray;
 import DataStructures.Dlb;
 import DataStructures.Pair;
-import Utils.Print;
+import Utils.TerminalPrinter;
 
 public class Tabu implements Algorithm {
 
@@ -39,7 +39,7 @@ public class Tabu implements Algorithm {
         Solution globalBestSolution = solution;
         Solution localBestSolution = solution;
 
-        Print.printSolution("Asignación inicial", solution);
+        TerminalPrinter.printSolution("Solucion inicial", solution);
 
         Dlb dlb = new Dlb(problem.size);
 
@@ -59,7 +59,7 @@ public class Tabu implements Algorithm {
                 Pair p = getBestMovement(solution, problem);
                 solution.applySwap(problem, p);
                 updateMemory(solution, p);
-                Print.printSwappedSolution("Asignación peor", solution, p);
+                TerminalPrinter.printSwappedSolution("Solucion peor", solution, p);
                 iterations++;
             }
 
@@ -94,7 +94,7 @@ public class Tabu implements Algorithm {
                     dlb.Set(second, false);
 
                     improve_flag = true;
-                    Print.printSwappedSolution("Asignación " + (iterations + 1), solution, swap);
+                    TerminalPrinter.printSwappedSolution("Solucion " + (iterations + 1), solution, swap);
                     iterations++;
                 }
                 if (!improve_flag)
