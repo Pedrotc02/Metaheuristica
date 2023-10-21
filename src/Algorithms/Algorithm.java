@@ -1,10 +1,11 @@
 package Algorithms;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
 
 import DataStructures.Pair;
-import Utils.Swap;
+import Utils.Array;
 
 public interface Algorithm {
     public class Solution {
@@ -13,6 +14,7 @@ public interface Algorithm {
 
         public Solution(int size) {
             this.assignations = new int[size];
+            Arrays.fill(this.assignations, -1);
             this.cost = 0;
         }
 
@@ -28,14 +30,14 @@ public interface Algorithm {
 
             this.assignations = IntStream.range(0, size).toArray();
             for (int i = size - 1; i >= 0; --i)
-                Swap.swapElements(this.assignations, new Pair(i, random.nextInt(i + 1)));
+                Array.swapElements(this.assignations, new Pair(i, random.nextInt(i + 1)));
 
             this.cost = 0;
         }
 
         public void applySwap(Problem problem, Pair swap) {
             this.cost = this.cost + LocalSearch.calculateDiffCost(problem, this, swap);
-            Swap.swapElements(assignations, swap);
+            Array.swapElements(assignations, swap);
         }
     }
 

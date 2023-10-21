@@ -1,27 +1,33 @@
 package Algorithms;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.Random;
+import java.util.TreeSet;
+import java.util.stream.IntStream;
+
 import DataStructures.CircularArray;
 import DataStructures.Dlb;
 import DataStructures.Pair;
+import Utils.Array;
 import Utils.TerminalPrinter;
 
 public class Tabu implements Algorithm {
 
     final int maxIterations;
-    CircularArray<Pair> tabuList;
-    int[][] memory;
     final Random random;
     Dlb dlb;
 
-    /**
-     * Número máximo de iteraciones que impliquen empeoramiento respecto al mejor
-     * del momento anterior
-     */
-    final int threshold;
+    final Problem problem;
+    TabuSolution currentSolution;
 
-    final TabuSolution currentSolution;
-    Solution globalBest;
+    CircularArray<Pair> tabuList;
+
+    // Memoria largo plazo
+    final int threshold;
+    final int numEliteSolutions;
+    int[][] memory;
+    final TreeSet<TabuSolution> eliteSolutions;
 
     private class TabuSolution extends Solution {
         int iterations;
@@ -36,6 +42,11 @@ public class Tabu implements Algorithm {
             this.iterations = other.iterations;
         }
 
+        public TabuSolution(Solution other) {
+            super(other);
+            this.iterations = 0;
+        }
+
         public TabuSolution(int size, Random random) {
             super(size, random);
             this.iterations = 0;
@@ -48,18 +59,20 @@ public class Tabu implements Algorithm {
         }
     }
 
-    public Tabu(int seed, int maxIterations, int percentage, int tabuDuration, Problem problem) {
+    public Tabu(int seed, int maxIterations, int percentage, int tabuDuration, int numEliteSolutions, Problem problem) {
         this.maxIterations = maxIterations;
         this.threshold = maxIterations * percentage / 100;
         this.tabuList = new CircularArray<>(tabuDuration);
         this.dlb = new Dlb(problem.size);
         this.random = new Random(seed);
         this.memory = new int[problem.size][problem.size];
+        this.numEliteSolutions = numEliteSolutions;
+        this.eliteSolutions = new TreeSet<>(Comparator.comparingInt((Solution s) -> s.cost));
 
         this.currentSolution = new TabuSolution(problem.size, random);
         currentSolution.cost = problem.calculateCost(currentSolution.assignations);
 
-        this.globalBest = new Solution(currentSolution);
+        this.problem = problem;
     }
 
     @Override
@@ -70,10 +83,12 @@ public class Tabu implements Algorithm {
         while (currentSolution.iterations < maxIterations) {
 
             TabuSolution previousLocalBest = new TabuSolution(currentSolution);
-            findLocalMaxima(problem, previousLocalBest);
 
-            if (currentSolution.cost < globalBest.cost)
-                globalBest = new Solution(currentSolution);
+            eliteSolutions.add(previousLocalBest);
+            if (eliteSolutions.size() > numEliteSolutions)
+                eliteSolutions.remove(eliteSolutions.last());
+
+            findLocalMaxima(problem, previousLocalBest);
 
             TerminalPrinter.printlnDebug("Reset dlb");
             dlb = new Dlb(problem.size, random);
@@ -83,7 +98,8 @@ public class Tabu implements Algorithm {
             updateMemory(swap);
 
         }
-        return globalBest;
+
+        return eliteSolutions.first();
     }
 
     private void findLocalMaxima(Problem problem, TabuSolution previousLocalBest) {
@@ -111,7 +127,8 @@ public class Tabu implements Algorithm {
                     currentSolution.applySwap(problem, swap);
                     updateMemory(swap);
 
-                    if ((currentSolution.iterations - previousLocalBest.iterations) >= threshold) {
+                    if ((currentSolution.iterations - previousLocalBest.iterations) >= threshold
+                            && currentSolution.cost >= previousLocalBest.cost) {
                         reinitializeLongTermMemory(random);
                         return;
                     }
@@ -160,13 +177,48 @@ public class Tabu implements Algorithm {
 
     private void reinitializeLongTermMemory(Random rand) {
 
-        TerminalPrinter.printlnDebug("Hay que resetear");
+        TerminalPrinter.printlnDebug("Reinicializando con memoria a largo plazo");
         if (rand.nextBoolean()) {
-            // Intensificación
-
+            generateIntensifiedSolution(rand);
         } else {
-            // Diversificación
-
+            generateDiversifiedSolution(rand);
         }
+    }
+
+    private void generateDiversifiedSolution(Random rand) {
+
+        TabuSolution newSolution = new TabuSolution(problem.size);
+        int randomInitialIndex = rand.nextInt(problem.size);
+        for (int k = 0; k < problem.size; ++k) {
+
+            int index = (randomInitialIndex + k) % problem.size;
+
+            int value = IntStream.range(0, problem.size)
+                    .filter(position -> !Array.contains(newSolution.assignations, position))
+                    .boxed()
+                    .min((i, j) -> Integer.compare(memory[randomInitialIndex][i], memory[randomInitialIndex][j]))
+                    .orElse(-1);
+            newSolution.assignations[index] = value;
+        }
+
+        newSolution.cost = problem.calculateCost(newSolution.assignations);
+        newSolution.iterations = currentSolution.iterations;
+
+        currentSolution = newSolution;
+    }
+
+    private void generateIntensifiedSolution(Random rand) {
+
+        int randomIndex = rand.nextInt(eliteSolutions.size());
+        var it = eliteSolutions.iterator();
+        var newSolution = it.next();
+
+        for (int i = 0; i < randomIndex; ++i)
+            newSolution = it.next();
+
+        eliteSolutions.remove(newSolution);
+
+        newSolution.iterations = currentSolution.iterations;
+        currentSolution = newSolution;
     }
 }

@@ -57,10 +57,11 @@ public class Config {
                     int maxIterations = properties.get("maxIteraciones");
                     int percentage = properties.get("porcentajeReinicializacion");
                     int tabuDuration = properties.get("tenenciaTabu");
-                    return new Tabu(seed, maxIterations, percentage, tabuDuration, problem);
+                    int numEliteSolutions = properties.get("numSolucionesElite");
+                    return new Tabu(seed, maxIterations, percentage, tabuDuration, numEliteSolutions, problem);
                 } catch (Exception e) {
                     throw new Exception(
-                            "Los parámetros del algoritmo TabuMar deben ser \"semilla\", \"maxIteraciones\", \"porcentajeReinicializacion\" y \"tenenciaTabu\".");
+                            "Los parámetros del algoritmo TabuMar deben ser \"semilla\", \"maxIteraciones\", \"porcentajeReinicializacion\", \"numSolucionesElite\" y \"tenenciaTabu\".");
                 }
             }
             default:

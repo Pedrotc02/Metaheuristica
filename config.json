@@ -3,8 +3,9 @@
     "algoritmo": "TabuMar",
     "propiedades": {
         "semilla": 12345678,
-        "maxIteraciones": 10000,
+        "maxIteraciones": 1000,
         "porcentajeReinicializacion": 5,
-        "tenenciaTabu": 7
+        "tenenciaTabu": 7,
+        "numSolucionesElite": 5
     }
 }

@@ -4,7 +4,7 @@ import java.util.Random;
 import DataStructures.Dlb;
 import DataStructures.Pair;
 import Utils.TerminalPrinter;
-import Utils.Swap;
+import Utils.Array;
 
 public class LocalSearch implements Algorithm {
 
@@ -47,7 +47,7 @@ public class LocalSearch implements Algorithm {
                     if (diffCost >= 0)
                         continue;
 
-                    Swap.swapElements(currentSolution.assignations, swap);
+                    Array.swapElements(currentSolution.assignations, swap);
                     currentSolution.cost += diffCost;
 
                     dlb.Set(first, false);
