@@ -183,6 +183,7 @@ public class Tabu implements Algorithm {
         } else {
             generateDiversifiedSolution(rand);
         }
+        currentSolution.iterations++;
     }
 
     private void generateDiversifiedSolution(Random rand) {
