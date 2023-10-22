@@ -18,13 +18,12 @@ public class Dlb {
      * @param size
      * @param seed
      */
-    public Dlb(int size, int seed) {
-        var random = new Random(seed);
+    public Dlb(int size, Random rand) {
         this.bitset = new BitSet(size);
         this.length = size;
 
         for (int i = 0; i < size; ++i)
-            Set(i, random.nextBoolean());
+            Set(i, rand.nextBoolean());
     }
 
     public boolean Get(int index) {

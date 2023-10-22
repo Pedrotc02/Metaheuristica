@@ -1,10 +1,11 @@
 {
     "archivo": "./data/ford01.dat",
-    "algoritmo": "Taboo",
+    "algoritmo": "TabuMar",
     "propiedades": {
         "semilla": 12345678,
         "maxIteraciones": 1000,
-        "limite": 5,
-        "tenenciaTabu": 7
+        "porcentajeReinicializacion": 5,
+        "tenenciaTabu": 7,
+        "numSolucionesElite": 5
     }
 }

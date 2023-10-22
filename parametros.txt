@@ -1,4 +1,0 @@
-Archivos=ford01.dat
-Semillas=53912166
-Algoritmos=Busqueda_Local
-OtrosParametros=1000

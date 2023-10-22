@@ -32,34 +32,36 @@ public class Config {
         var properties = readAlgorithmProperties(config);
         String algorithmType = readField(algorithmPattern, config);
 
-        this.algorithm = chooseAlgorithm(algorithmType, properties);
+        this.algorithm = chooseAlgorithm(algorithmType, properties, problem);
     }
 
-    private Algorithm chooseAlgorithm(String algorithmType, Hashtable<String, Integer> properties) throws Exception {
+    private Algorithm chooseAlgorithm(String algorithmType, Hashtable<String, Integer> properties, Problem problem)
+            throws Exception {
 
         switch (algorithmType) {
             case "Greedy":
                 return new Greedy();
-            case "LocalSearch": {
+            case "PMDLBrandom": {
                 try {
                     int seed = properties.get("semilla");
                     int maxIterations = properties.get("maxIteraciones");
-                    return new LocalSearch(seed, maxIterations);
+                    return new LocalSearch(seed, maxIterations, problem);
                 } catch (Exception e) {
                     throw new Exception(
-                            "Los parámetros del algoritmo LocalSearch deben ser \"semilla\" y \"maxIteraciones\".");
+                            "Los parámetros del algoritmo PMDLBrandom deben ser \"semilla\" y \"maxIteraciones\".");
                 }
             }
-            case "Taboo": {
+            case "TabuMar": {
                 try {
                     int seed = properties.get("semilla");
                     int maxIterations = properties.get("maxIteraciones");
-                    int percentage = properties.get("limite");
-                    int memorySize = properties.get("tenenciaTabu");
-                    return new Taboo(seed, maxIterations, percentage, memorySize);
+                    int percentage = properties.get("porcentajeReinicializacion");
+                    int tabuDuration = properties.get("tenenciaTabu");
+                    int numEliteSolutions = properties.get("numSolucionesElite");
+                    return new Tabu(seed, maxIterations, percentage, tabuDuration, numEliteSolutions, problem);
                 } catch (Exception e) {
                     throw new Exception(
-                            "Los parámetros del algoritmo Taboo deben ser \"semilla\", \"maxIteraciones\" y \"limite\".");
+                            "Los parámetros del algoritmo TabuMar deben ser \"semilla\", \"maxIteraciones\", \"porcentajeReinicializacion\", \"numSolucionesElite\" y \"tenenciaTabu\".");
                 }
             }
             default:

@@ -3,31 +3,32 @@ package Algorithms;
 import java.util.Random;
 import DataStructures.Dlb;
 import DataStructures.Pair;
-import Utils.Print;
+import Utils.TerminalPrinter;
+import Utils.Array;
 
 public class LocalSearch implements Algorithm {
 
-    final int seed;
+    final Random random;
     final int maxIterations;
+    final Dlb dlb;
+    Solution currentSolution;
 
-    public LocalSearch(int seed, int maxIterations) {
-        this.seed = seed;
+    public LocalSearch(int seed, int maxIterations, Problem problem) {
+        this.random = new Random(seed);
         this.maxIterations = maxIterations;
+        this.dlb = new Dlb(problem.size);
+        this.currentSolution = new Solution(problem.size, random);
+        currentSolution.cost = problem.calculateCost(currentSolution.assignations);
     }
 
     @Override
     public Solution Solve(Problem problem) {
-        Solution solution = new Solution(problem.size, this.seed);
-        solution.cost = problem.calculateCost(solution.assignations);
 
-        Print.printSolution("Asignación inicial", solution);
+        TerminalPrinter.printSolution("Asignación inicial", currentSolution);
 
-        Dlb dlb = new Dlb(problem.size);
         int iterations = 0;
 
-        Random rand = new Random(this.seed);
-
-        int randomInitialIndex = rand.nextInt(dlb.length);
+        int randomInitialIndex = random.nextInt(dlb.length);
         while (iterations < maxIterations && !dlb.AllActivated()) {
 
             for (int i = 0; i < dlb.length; ++i) {
@@ -41,26 +42,26 @@ public class LocalSearch implements Algorithm {
                     int second = (first + j) % dlb.length;
 
                     Pair swap = new Pair(first, second);
-                    int diffCost = calculateDiffCost(problem, solution, swap);
+                    int diffCost = calculateDiffCost(problem, currentSolution, swap);
 
                     if (diffCost >= 0)
                         continue;
 
-                    Print.swapElements(solution.assignations, swap);
-                    solution.cost += diffCost;
+                    Array.swapElements(currentSolution.assignations, swap);
+                    currentSolution.cost += diffCost;
 
                     dlb.Set(first, false);
                     dlb.Set(second, false);
 
                     improve_flag = true;
-                    Print.printSwappedSolution("Asignación " + (iterations + 1), solution, swap);
+                    TerminalPrinter.printSwappedSolution("Solucion " + (iterations + 1), currentSolution, swap);
                     iterations++;
                 }
                 if (!improve_flag)
                     dlb.Set(first, true);
             }
         }
-        return solution;
+        return currentSolution;
     }
 
     public static int calculateDiffCost(Problem problem, Solution solution, Pair swap) {
