@@ -1,7 +1,6 @@
 package Algorithms;
 
 import java.util.Comparator;
-import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.TreeSet;
 import java.util.stream.IntStream;
@@ -10,7 +9,7 @@ import DataStructures.CircularArray;
 import DataStructures.Dlb;
 import DataStructures.Pair;
 import Utils.Array;
-import Utils.TerminalPrinter;
+import Utils.Printer;
 
 public class Tabu implements Algorithm {
 
@@ -55,7 +54,7 @@ public class Tabu implements Algorithm {
         public void applySwap(Problem problem, Pair swap) {
             super.applySwap(problem, swap);
             this.iterations++;
-            TerminalPrinter.printSwappedSolution("Solucion " + iterations, this, swap);
+            Printer.printSolution("Solucion " + iterations, this);
         }
     }
 
@@ -78,7 +77,7 @@ public class Tabu implements Algorithm {
     @Override
     public Solution Solve(Problem problem) {
 
-        TerminalPrinter.printSolution("Solucion inicial", currentSolution);
+        Printer.printSolution("Solucion inicial", currentSolution);
 
         while (currentSolution.iterations < maxIterations) {
 
@@ -90,7 +89,7 @@ public class Tabu implements Algorithm {
 
             findLocalMaxima(problem, previousLocalBest);
 
-            TerminalPrinter.printlnDebug("Reset dlb");
+            Printer.printlnDebug("Reset dlb");
             dlb = new Dlb(problem.size, random);
 
             Pair swap = getBestMovement(currentSolution, problem);
@@ -177,7 +176,7 @@ public class Tabu implements Algorithm {
 
     private void reinitializeLongTermMemory(Random rand) {
 
-        TerminalPrinter.printlnDebug("Reinicializando con memoria a largo plazo");
+        Printer.printlnDebug("Reinicializando con memoria a largo plazo");
         if (rand.nextBoolean()) {
             generateIntensifiedSolution(rand);
         } else {

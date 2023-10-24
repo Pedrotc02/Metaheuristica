@@ -3,7 +3,7 @@ package Algorithms;
 import java.util.Random;
 import DataStructures.Dlb;
 import DataStructures.Pair;
-import Utils.TerminalPrinter;
+import Utils.Printer;
 import Utils.Array;
 
 public class LocalSearch implements Algorithm {
@@ -24,7 +24,7 @@ public class LocalSearch implements Algorithm {
     @Override
     public Solution Solve(Problem problem) {
 
-        TerminalPrinter.printSolution("Asignación inicial", currentSolution);
+        Printer.printSolution("Asignación inicial", currentSolution);
 
         int iterations = 0;
 
@@ -54,7 +54,7 @@ public class LocalSearch implements Algorithm {
                     dlb.Set(second, false);
 
                     improve_flag = true;
-                    TerminalPrinter.printSwappedSolution("Solucion " + (iterations + 1), currentSolution, swap);
+                    Printer.printSolution("Solucion " + (iterations + 1), currentSolution);
                     iterations++;
                 }
                 if (!improve_flag)

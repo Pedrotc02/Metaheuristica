@@ -7,5 +7,6 @@
         "porcentajeReinicializacion": 5,
         "tenenciaTabu": 7,
         "numSolucionesElite": 5
-    }
+    },
+    "log": "log01.txt"
 }

@@ -6,12 +6,14 @@ import java.util.regex.Pattern;
 
 import Algorithms.*;
 import Algorithms.Algorithm.Solution;
+import Utils.Printer;
 
 public class Config {
 
     static final String configFilePath = "./config.json";
     static final Pattern filepathPattern = Pattern.compile("\"archivo\":\\s*\"([^\"]*)\"");
     static final Pattern algorithmPattern = Pattern.compile("\"algoritmo\":\\s*\"([^\"]*)\"");
+    static final Pattern logFilePattern = Pattern.compile("\"log\":\\s*\"([^\"]*)\"");
     static final Pattern propertiesPattern = Pattern
             .compile("\"propiedades\":\\s*\\{\\s*((\"[^\"]*\":\\s*[^,}\\s]+,?\\s*)+)\\}");
 
@@ -33,6 +35,14 @@ public class Config {
         String algorithmType = readField(algorithmPattern, config);
 
         this.algorithm = chooseAlgorithm(algorithmType, properties, problem);
+
+        var logPath = readField(logFilePattern, config);
+        try {
+            Printer.init("./logs/" + logPath);
+        } catch (Exception e) {
+            throw new Exception(
+                    "El campo \"log\" debe contener el nombre del archivo donde se guarden los logs durante la ejecución del programa.\n");
+        }
     }
 
     private Algorithm chooseAlgorithm(String algorithmType, Hashtable<String, Integer> properties, Problem problem)
