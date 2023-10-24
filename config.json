@@ -1,12 +1,13 @@
 {
     "archivo": "./data/ford01.dat",
-    "algoritmo": "TabuMar",
+    "algoritmo": "Grasp",
     "propiedades": {
         "semilla": 12345678,
+        "tamañoGreedy": 10,
+        "numEjecuciones": 25,
         "maxIteraciones": 1000,
         "porcentajeReinicializacion": 5,
         "tenenciaTabu": 7,
         "numSolucionesElite": 5
-    },
-    "log": "log01.txt"
+    }
 }

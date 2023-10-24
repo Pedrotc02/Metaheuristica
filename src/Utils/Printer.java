@@ -34,6 +34,12 @@ public final class Printer {
         print("\nCoste: " + solution.cost + "\n");
     }
 
+    public static void printTerminalSolution(String name, Solution solution) {
+        System.out.print(name + ": ");
+        printTerminalArray(solution.assignations);
+        System.out.print("\nCoste: " + solution.cost + "\n");
+    }
+
     /**
      * Es necesario llamar a esta función al final de la ejecución del programa
      */
@@ -45,6 +51,11 @@ public final class Printer {
     private static void printArray(int[] arr) {
         for (int i = 0; i < arr.length; ++i)
             print(arr[i] + " ");
+    }
+
+    private static void printTerminalArray(int[] arr) {
+        for (int i = 0; i < arr.length; ++i)
+            System.out.print(arr[i] + " ");
     }
 
     private static void print(String message) {

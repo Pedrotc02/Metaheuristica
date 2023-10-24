@@ -13,22 +13,30 @@ import Utils.Printer;
 
 public class Tabu implements Algorithm {
 
-    final int maxIterations;
-    final Random random;
-    Dlb dlb;
+    public static class Parameters {
+        public int seed;
+        public int maxIterations;
+        public int percentage;
+        public int tabuDuration;
+        public int numEliteSolutions;
+    }
 
-    final Problem problem;
-    TabuSolution currentSolution;
+    private final int maxIterations;
+    private final Random random;
+    private Dlb dlb;
 
-    CircularArray<Pair> tabuList;
+    private final Problem problem;
+    private TabuSolution currentSolution;
+
+    private CircularArray<Pair> tabuList;
 
     // Memoria largo plazo
-    final int threshold;
-    final int numEliteSolutions;
-    int[][] memory;
-    final TreeSet<TabuSolution> eliteSolutions;
+    private final int threshold;
+    private final int numEliteSolutions;
+    private int[][] memory;
+    private final TreeSet<TabuSolution> eliteSolutions;
 
-    private class TabuSolution extends Solution {
+    public static class TabuSolution extends Solution {
         int iterations;
 
         public TabuSolution(int size) {
@@ -58,19 +66,33 @@ public class Tabu implements Algorithm {
         }
     }
 
-    public Tabu(int seed, int maxIterations, int percentage, int tabuDuration, int numEliteSolutions, Problem problem) {
-        this.maxIterations = maxIterations;
-        this.threshold = maxIterations * percentage / 100;
-        this.tabuList = new CircularArray<>(tabuDuration);
+    public Tabu(Parameters p, Problem problem) {
+        this.maxIterations = p.maxIterations;
+        this.threshold = p.maxIterations * p.percentage / 100;
+        this.tabuList = new CircularArray<>(p.tabuDuration);
         this.dlb = new Dlb(problem.size);
-        this.random = new Random(seed);
+        this.random = new Random(p.seed);
         this.memory = new int[problem.size][problem.size];
-        this.numEliteSolutions = numEliteSolutions;
+        this.numEliteSolutions = p.numEliteSolutions;
         this.eliteSolutions = new TreeSet<>(Comparator.comparingInt((Solution s) -> s.cost));
 
         this.currentSolution = new TabuSolution(problem.size, random);
         currentSolution.cost = problem.calculateCost(currentSolution.assignations);
 
+        this.problem = problem;
+    }
+
+    public Tabu(Parameters p, TabuSolution initialSolution, Problem problem) {
+        this.maxIterations = p.maxIterations;
+        this.threshold = p.maxIterations * p.percentage / 100;
+        this.tabuList = new CircularArray<>(p.tabuDuration);
+        this.dlb = new Dlb(problem.size);
+        this.random = new Random(p.seed);
+        this.memory = new int[problem.size][problem.size];
+        this.numEliteSolutions = p.numEliteSolutions;
+        this.eliteSolutions = new TreeSet<>(Comparator.comparingInt((Solution s) -> s.cost));
+
+        this.currentSolution = initialSolution;
         this.problem = problem;
     }
 

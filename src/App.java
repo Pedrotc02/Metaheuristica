@@ -11,9 +11,10 @@ public class App {
             Solution solution = config.Solve();
             var end = System.nanoTime();
 
-            System.out.format("Tiempo de ejecución: %.3fms", (end - start) * 1e-6);
+            System.out.format("Tiempo de ejecución: %.3fms\n\n", (end - start) * 1e-6);
 
             Printer.printSolution("Solucion final", solution);
+            Printer.printTerminalSolution("Solucion final", solution);
         } catch (Exception e) {
             Printer.printException(e);
         } finally {

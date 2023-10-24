@@ -1,5 +1,6 @@
 import java.io.File;
 import java.util.Hashtable;
+import java.util.Properties;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,13 +37,21 @@ public class Config {
 
         this.algorithm = chooseAlgorithm(algorithmType, properties, problem);
 
-        var logPath = readField(logFilePattern, config);
+        String logFilename = "./logs/log" + algorithmType + "_";
+        int index = 0;
+        while (new File(logFilename + index + ".txt").exists())
+            index++;
+
+        logFilename += index + ".txt";
+
         try {
-            Printer.init("./logs/" + logPath);
+            Printer.init(logFilename);
         } catch (Exception e) {
             throw new Exception(
                     "El campo \"log\" debe contener el nombre del archivo donde se guarden los logs durante la ejecución del programa.\n");
         }
+        System.out.println("Ejecutando " + algorithmType + " sobre el problema " + problemFilePath + ".");
+        System.out.println("El archivo log se encuentra en " + logFilename);
     }
 
     private Algorithm chooseAlgorithm(String algorithmType, Hashtable<String, Integer> properties, Problem problem)
@@ -63,15 +72,33 @@ public class Config {
             }
             case "TabuMar": {
                 try {
-                    int seed = properties.get("semilla");
-                    int maxIterations = properties.get("maxIteraciones");
-                    int percentage = properties.get("porcentajeReinicializacion");
-                    int tabuDuration = properties.get("tenenciaTabu");
-                    int numEliteSolutions = properties.get("numSolucionesElite");
-                    return new Tabu(seed, maxIterations, percentage, tabuDuration, numEliteSolutions, problem);
+                    var p = new Tabu.Parameters();
+                    p.seed = properties.get("semilla");
+                    p.maxIterations = properties.get("maxIteraciones");
+                    p.percentage = properties.get("porcentajeReinicializacion");
+                    p.tabuDuration = properties.get("tenenciaTabu");
+                    p.numEliteSolutions = properties.get("numSolucionesElite");
+                    return new Tabu(p, problem);
                 } catch (Exception e) {
                     throw new Exception(
                             "Los parámetros del algoritmo TabuMar deben ser \"semilla\", \"maxIteraciones\", \"porcentajeReinicializacion\", \"numSolucionesElite\" y \"tenenciaTabu\".");
+                }
+            }
+            case "Grasp": {
+                try {
+                    var p = new Grasp.Parameters();
+                    p.tabuParameters = new Tabu.Parameters();
+                    p.greedySize = properties.get("tamañoGreedy");
+                    p.numExecutions = properties.get("numEjecuciones");
+                    p.tabuParameters.seed = properties.get("semilla");
+                    p.tabuParameters.maxIterations = properties.get("maxIteraciones");
+                    p.tabuParameters.percentage = properties.get("porcentajeReinicializacion");
+                    p.tabuParameters.tabuDuration = properties.get("tenenciaTabu");
+                    p.tabuParameters.numEliteSolutions = properties.get("numSolucionesElite");
+                    return new Grasp(p, problem);
+                } catch (Exception e) {
+                    throw new Exception(
+                            "Los parámetros del algoritmo Grasp deben ser \"semilla\", \"tamañoGreedy\", \"numEjecuciones\", \"maxIteraciones\", \"porcentajeReinicializacion\", \"numSolucionesElite\" y \"tenenciaTabu\".");
                 }
             }
             default:
