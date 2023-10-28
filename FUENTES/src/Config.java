@@ -10,7 +10,7 @@ import Utils.Printer;
 
 public class Config {
 
-    static final String configFilePath = "./config.json";
+    static final String configFilePath = "./FUENTES/config.json";
     static final Pattern filepathPattern = Pattern.compile("\"archivo\":\\s*\"([^\"]*)\"");
     static final Pattern algorithmPattern = Pattern.compile("\"algoritmo\":\\s*\"([^\"]*)\"");
     static final Pattern logFilePattern = Pattern.compile("\"log\":\\s*\"([^\"]*)\"");
@@ -36,7 +36,7 @@ public class Config {
 
         this.algorithm = chooseAlgorithm(algorithmType, properties, problem);
 
-        String logFilename = "./logs/log" + algorithmType + "_";
+        String logFilename = "./BIN/logs/log" + algorithmType + "_";
         int index = 0;
         while (new File(logFilename + index + ".txt").exists())
             index++;

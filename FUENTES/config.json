@@ -1,5 +1,5 @@
 {
-    "archivo": "./data/ford01.dat",
+    "archivo": "./BIN/data/ford01.dat",
     "algoritmo": "Grasp",
     "propiedades": {
         "semilla": 12345678,

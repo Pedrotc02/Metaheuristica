@@ -1,0 +1,20 @@
+Para la correcta ejecución del programa se recomienda utilizar Java 20 aunque otras versiones pueden funcionar también.
+
+Dentro del archivo config.json puede configurar el programa tal y como se indica en la documentación.
+Si la ruta del archivo.dat se especifica como relativa, debe serlo siempre respecto a la carpeta raíz (SOFTWARE).
+
+Para ejecutar el programa, su directorio actual (pwd) debe ser la carpeta SOFTWARE, y escribir en terminal:
+
+    java --enable-preview -cp .\BIN\bin App    
+
+
+Descripción general de ficheros:
+
+    La carpeta .vscode/ contiene los archivos de configuración del proyecto para el entorno VSCode.
+
+    Dentro de FUENTES/src se encuentran los archivos .java que forman el proyecto.
+    El archivo FUENTES/config.json es el de configuración.
+
+    Dentro de BIN/bin se encuentran los archivos en bytecode resultado de la compilación de FUENTES/src utilizando javac, preparados para su ejecución mediante la JVM
+    En BIN/data se encuentran los archivos de datos.
+    Al ejecutar el programa se creará una carpeta en BIN/logs donde se almacenarán los respectivos logs con cada ejecución.
