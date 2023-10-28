@@ -6,14 +6,14 @@ import DataStructures.Pair;
 import Utils.Printer;
 import Utils.Array;
 
-public class LocalSearch implements Algorithm {
+public class AlgPMDLBrandom_Clase02_Grupo14 implements Algorithm {
 
     final Random random;
     final int maxIterations;
     final Dlb dlb;
     Solution currentSolution;
 
-    public LocalSearch(int seed, int maxIterations, Problem problem) {
+    public AlgPMDLBrandom_Clase02_Grupo14(int seed, int maxIterations, Problem problem) {
         this.random = new Random(seed);
         this.maxIterations = maxIterations;
         this.dlb = new Dlb(problem.size);

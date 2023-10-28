@@ -5,13 +5,13 @@ import java.util.Comparator;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import Algorithms.Tabu.TabuSolution;
+import Algorithms.AlgTabu_Clase02_Grupo14.TabuSolution;
 import Utils.Printer;
 
-public class Grasp implements Algorithm {
+public class AlgGrasp_Clase02_Grupo14 implements Algorithm {
 
     public static class Parameters {
-        public Tabu.Parameters tabuParameters;
+        public AlgTabu_Clase02_Grupo14.Parameters tabuParameters;
         public int greedySize;
         public int numExecutions;
     }
@@ -21,9 +21,9 @@ public class Grasp implements Algorithm {
     private final int maxSize;
 
     private final Solution[] solutions;
-    private final Tabu.Parameters tabuParameters;
+    private final AlgTabu_Clase02_Grupo14.Parameters tabuParameters;
 
-    public Grasp(Parameters p, Problem problem) {
+    public AlgGrasp_Clase02_Grupo14(Parameters p, Problem problem) {
         this.random = new Random(p.tabuParameters.seed);
         this.maxSize = p.greedySize;
         this.problem = problem;
@@ -36,7 +36,8 @@ public class Grasp implements Algorithm {
 
         for (int i = 0; i < solutions.length; ++i) {
             Printer.printlnDebug("Ejecución GRASP " + i);
-            var tabuSolver = new Tabu(this.tabuParameters, createGreedyRandomSolution(random), this.problem);
+            var tabuSolver = new AlgTabu_Clase02_Grupo14(this.tabuParameters, createGreedyRandomSolution(random),
+                    this.problem);
             solutions[i] = new TabuSolution(tabuSolver.Solve(problem));
         }
 

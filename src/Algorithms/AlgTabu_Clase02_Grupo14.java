@@ -11,7 +11,7 @@ import DataStructures.Pair;
 import Utils.Array;
 import Utils.Printer;
 
-public class Tabu implements Algorithm {
+public class AlgTabu_Clase02_Grupo14 implements Algorithm {
 
     public static class Parameters {
         public int seed;
@@ -66,7 +66,7 @@ public class Tabu implements Algorithm {
         }
     }
 
-    public Tabu(Parameters p, Problem problem) {
+    public AlgTabu_Clase02_Grupo14(Parameters p, Problem problem) {
         this.maxIterations = p.maxIterations;
         this.threshold = p.maxIterations * p.percentage / 100;
         this.tabuList = new CircularArray<>(p.tabuDuration);
@@ -82,7 +82,7 @@ public class Tabu implements Algorithm {
         this.problem = problem;
     }
 
-    public Tabu(Parameters p, TabuSolution initialSolution, Problem problem) {
+    public AlgTabu_Clase02_Grupo14(Parameters p, TabuSolution initialSolution, Problem problem) {
         this.maxIterations = p.maxIterations;
         this.threshold = p.maxIterations * p.percentage / 100;
         this.tabuList = new CircularArray<>(p.tabuDuration);
@@ -141,7 +141,7 @@ public class Tabu implements Algorithm {
                     if (tabuList.contains(swap))
                         continue;
 
-                    int diffCost = LocalSearch.calculateDiffCost(problem, currentSolution, swap);
+                    int diffCost = AlgPMDLBrandom_Clase02_Grupo14.calculateDiffCost(problem, currentSolution, swap);
                     if (diffCost >= 0)
                         continue;
 
@@ -177,7 +177,7 @@ public class Tabu implements Algorithm {
                 if (tabuList.contains(neighbour))
                     continue;
 
-                int neighbourCost = LocalSearch.calculateDiffCost(problem, solution, neighbour);
+                int neighbourCost = AlgPMDLBrandom_Clase02_Grupo14.calculateDiffCost(problem, solution, neighbour);
                 if (neighbourCost < bestDiffCost) {
                     bestDiffCost = neighbourCost;
                     bestMovement = neighbour;

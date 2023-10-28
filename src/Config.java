@@ -1,6 +1,5 @@
 import java.io.File;
 import java.util.Hashtable;
-import java.util.Properties;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,12 +58,12 @@ public class Config {
 
         switch (algorithmType) {
             case "Greedy":
-                return new Greedy();
+                return new AlgGreedy_Clase02_Grupo14();
             case "PMDLBrandom": {
                 try {
                     int seed = properties.get("semilla");
                     int maxIterations = properties.get("maxIteraciones");
-                    return new LocalSearch(seed, maxIterations, problem);
+                    return new AlgPMDLBrandom_Clase02_Grupo14(seed, maxIterations, problem);
                 } catch (Exception e) {
                     throw new Exception(
                             "Los parámetros del algoritmo PMDLBrandom deben ser \"semilla\" y \"maxIteraciones\".");
@@ -72,13 +71,13 @@ public class Config {
             }
             case "TabuMar": {
                 try {
-                    var p = new Tabu.Parameters();
+                    var p = new AlgTabu_Clase02_Grupo14.Parameters();
                     p.seed = properties.get("semilla");
                     p.maxIterations = properties.get("maxIteraciones");
                     p.percentage = properties.get("porcentajeReinicializacion");
                     p.tabuDuration = properties.get("tenenciaTabu");
                     p.numEliteSolutions = properties.get("numSolucionesElite");
-                    return new Tabu(p, problem);
+                    return new AlgTabu_Clase02_Grupo14(p, problem);
                 } catch (Exception e) {
                     throw new Exception(
                             "Los parámetros del algoritmo TabuMar deben ser \"semilla\", \"maxIteraciones\", \"porcentajeReinicializacion\", \"numSolucionesElite\" y \"tenenciaTabu\".");
@@ -86,8 +85,8 @@ public class Config {
             }
             case "Grasp": {
                 try {
-                    var p = new Grasp.Parameters();
-                    p.tabuParameters = new Tabu.Parameters();
+                    var p = new AlgGrasp_Clase02_Grupo14.Parameters();
+                    p.tabuParameters = new AlgTabu_Clase02_Grupo14.Parameters();
                     p.greedySize = properties.get("tamañoGreedy");
                     p.numExecutions = properties.get("numEjecuciones");
                     p.tabuParameters.seed = properties.get("semilla");
@@ -95,7 +94,7 @@ public class Config {
                     p.tabuParameters.percentage = properties.get("porcentajeReinicializacion");
                     p.tabuParameters.tabuDuration = properties.get("tenenciaTabu");
                     p.tabuParameters.numEliteSolutions = properties.get("numSolucionesElite");
-                    return new Grasp(p, problem);
+                    return new AlgGrasp_Clase02_Grupo14(p, problem);
                 } catch (Exception e) {
                     throw new Exception(
                             "Los parámetros del algoritmo Grasp deben ser \"semilla\", \"tamañoGreedy\", \"numEjecuciones\", \"maxIteraciones\", \"porcentajeReinicializacion\", \"numSolucionesElite\" y \"tenenciaTabu\".");

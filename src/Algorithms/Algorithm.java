@@ -36,7 +36,7 @@ public interface Algorithm {
         }
 
         public void applySwap(Problem problem, Pair swap) {
-            this.cost = this.cost + LocalSearch.calculateDiffCost(problem, this, swap);
+            this.cost = this.cost + AlgPMDLBrandom_Clase02_Grupo14.calculateDiffCost(problem, this, swap);
             Array.swapElements(assignations, swap);
         }
     }

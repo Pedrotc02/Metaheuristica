@@ -3,7 +3,7 @@ package Algorithms;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-public class Greedy implements Algorithm {
+public class AlgGreedy_Clase02_Grupo14 implements Algorithm {
 
     @Override
     public Solution Solve(Problem problem) {
