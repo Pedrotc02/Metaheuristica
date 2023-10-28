@@ -1,0 +1,10 @@
+{
+    "java.project.sourcePaths": [
+        "FUENTES/src"
+    ],
+    "java.project.outputPath": "BIN/bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ],
+    "java.format.settings.url": "eclipse-formatter.xml"
+}
